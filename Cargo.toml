@@ -12,3 +12,7 @@ features = ["png"]
 
 [dependencies.itertools]
 version = "0"
+
+[dependencies.glam]
+version = "0"
+features = ["fast-math"]
