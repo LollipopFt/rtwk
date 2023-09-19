@@ -4,6 +4,7 @@ use itertools::Itertools;
 use std::io::Write;
 
 mod colour;
+mod ray;
 type Flt = f32;
 
 const IMG_W: u32 = 256;
