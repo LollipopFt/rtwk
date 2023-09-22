@@ -27,6 +27,21 @@ const CAM_CTR: Vec3 = Vec3::ZERO;
 const VWPT_U: Vec3 = Vec3::new(VWPT_W, 0., 0.);
 const VWPT_V: Vec3 = Vec3::new(0., -VWPT_H, 0.);
 
+fn hit_sphere(ctr: &Vec3, rad: Flt, ray: &Ray) -> bool {
+  //    x² + y² + z² = r²
+  // => (x - Cx)² + (y - Cy)² + (z - Cz)² = (P - C) ⋅ (P - C)
+  // => (P(t) - C) ⋅ (P(t) - C) = r²    P(t) = A + tB
+  // => (tB + A - C) ⋅ (tB + A - C) = r²
+  // => t²B⋅B + 2tB ⋅ (A - C) + (A - C) ⋅ (A - C) - r² = 0
+  // => ∴ a = B ⋅ B; b = 2B ⋅ (A - C); c = (A - C) ⋅ (A - C) - r²
+  let oc = ray.orig - *ctr;
+  let a = ray.dir.dot(ray.dir);
+  let b = 2. * oc.dot(ray.dir);
+  let c = oc.dot(oc) - rad * rad;
+  let discrm = b * b - 4. * a * c;
+  discrm >= 0.
+}
+
 fn main() {
   let mut handle = std::io::BufWriter::new(std::io::stderr());
   let mut img = image::RgbImage::new(IMG_W, IMG_H);

@@ -1,4 +1,4 @@
-use crate::Flt;
+use crate::{hit_sphere, Flt};
 use glam::Vec3;
 
 pub struct Ray {
@@ -16,6 +16,9 @@ impl Ray {
   }
 
   pub fn colour(&self) -> Vec3 {
+    if hit_sphere(&Vec3::NEG_Z, 0.5, self) {
+      return Vec3::X;
+    }
     let unit_dir = self.dir.normalize();
     let a = 0.5 * (unit_dir.y + 1.);
     (1. - a) * Vec3::ONE + a * Vec3::new(0.5, 0.7, 1.)
