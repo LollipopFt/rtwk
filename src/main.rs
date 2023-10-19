@@ -27,7 +27,7 @@ const CAM_CTR: Vec3 = Vec3::ZERO;
 const VWPT_U: Vec3 = Vec3::new(VWPT_W, 0., 0.);
 const VWPT_V: Vec3 = Vec3::new(0., -VWPT_H, 0.);
 
-fn hit_sphere(ctr: &Vec3, rad: Flt, ray: &Ray) -> bool {
+fn hit_sphere(ctr: &Vec3, rad: Flt, ray: &Ray) -> Flt {
   //    x² + y² + z² = r²
   // => (x - Cx)² + (y - Cy)² + (z - Cz)² = (P - C) ⋅ (P - C)
   // => (P(t) - C) ⋅ (P(t) - C) = r²    P(t) = A + tB
@@ -39,7 +39,11 @@ fn hit_sphere(ctr: &Vec3, rad: Flt, ray: &Ray) -> bool {
   let b = 2. * oc.dot(ray.dir);
   let c = oc.dot(oc) - rad * rad;
   let discrm = b * b - 4. * a * c;
-  discrm >= 0.
+  if discrm < 0. {
+    -1.
+  } else {
+    (-b - discrm.sqrt()) / (2. * a)
+  }
 }
 
 fn main() {

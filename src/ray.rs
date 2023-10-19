@@ -16,8 +16,10 @@ impl Ray {
   }
 
   pub fn colour(&self) -> Vec3 {
-    if hit_sphere(&Vec3::NEG_Z, 0.5, self) {
-      return Vec3::X;
+    let t = hit_sphere(&Vec3::NEG_Z, 0.5, self);
+    if t > 0. {
+      let n = (self.at(t) - Vec3::NEG_Z).normalize();
+      return 0.5 * (n + Vec3::ONE);
     }
     let unit_dir = self.dir.normalize();
     let a = 0.5 * (unit_dir.y + 1.);
