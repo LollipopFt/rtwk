@@ -35,14 +35,14 @@ fn hit_sphere(ctr: &Vec3, rad: Flt, ray: &Ray) -> Flt {
   // => t²B⋅B + 2tB ⋅ (A - C) + (A - C) ⋅ (A - C) - r² = 0
   // => ∴ a = B ⋅ B; b = 2B ⋅ (A - C); c = (A - C) ⋅ (A - C) - r²
   let oc = ray.orig - *ctr;
-  let a = ray.dir.dot(ray.dir);
-  let b = 2. * oc.dot(ray.dir);
-  let c = oc.dot(oc) - rad * rad;
-  let discrm = b * b - 4. * a * c;
+  let a = ray.dir.length_squared();
+  let half_b = oc.dot(ray.dir);
+  let c = oc.length_squared() - rad * rad;
+  let discrm = half_b.powi(2) - a * c;
   if discrm < 0. {
     -1.
   } else {
-    (-b - discrm.sqrt()) / (2. * a)
+    (-half_b - discrm.sqrt()) / a
   }
 }
 
