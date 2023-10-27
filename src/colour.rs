@@ -1,10 +1,10 @@
-use glam::Vec3;
+use crate::V3;
 
 pub trait Colour {
   fn colour(&self) -> [u8; 3];
 }
 
-impl Colour for Vec3 {
+impl Colour for V3 {
   fn colour(&self) -> [u8; 3] {
     [
       (self.x * 255.999) as u8,
