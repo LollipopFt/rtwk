@@ -39,9 +39,11 @@ impl Hittable for Sphere {
       }
     }
 
-    let t = root;
-    let p = ray.at(t);
-    let norm = (p - self.ctr) / self.rad;
-    Some(HitRecord { p, norm, t })
+    let mut rec = HitRecord::default();
+    rec.t = root;
+    rec.p = ray.at(rec.t);
+    let out_norm = (rec.p - self.ctr) / self.rad;
+    rec.set_face_normal(ray, &out_norm);
+    Some(rec)
   }
 }
