@@ -11,6 +11,12 @@ pub struct Sphere {
   rad: Flt,
 }
 
+impl Sphere {
+  pub fn new(ctr: V3, rad: Flt) -> Self {
+    Self { ctr, rad }
+  }
+}
+
 impl Hittable for Sphere {
   fn hit(&self, ray: &Ray, int: Range<Flt>) -> Option<HitRecord> {
     //    x² + y² + z² = r²

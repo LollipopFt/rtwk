@@ -1,5 +1,6 @@
+use crate::hittable::Hittable;
+use crate::Flt;
 use crate::V3;
-use crate::{hit_sphere, Flt};
 
 pub struct Ray {
   pub orig: V3,
@@ -15,11 +16,12 @@ impl Ray {
     self.orig + t * self.dir
   }
 
-  pub fn colour(&self) -> V3 {
-    let t = hit_sphere(&V3::NEG_Z, 0.5, self);
-    if t > 0. {
-      let n = (self.at(t) - V3::NEG_Z).normalize();
-      return 0.5 * (n + V3::ONE);
+  pub fn colour<T>(&self, world: &T) -> V3
+  where
+    T: Hittable,
+  {
+    if let Some(rec) = world.hit(self, 0.001..Flt::INFINITY) {
+      return 0.5 * (rec.norm + V3::ONE);
     }
     let unit_dir = self.dir.normalize();
     let a = 0.5 * (unit_dir.y + 1.);
